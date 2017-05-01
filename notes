@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Angular Menu Task</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <script src="node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="node_modules/angular/angular.min.js"></script>
+  <script src="js/page.js"></script>
+<!--  <script src="js/buttons.js"></script> -->
+</head>
+<body ng-app="pageApp">
+
+
+<div class="container" >
+  <aris-tile-title-with-buttons buttons="buttons"></aris-tile-title-with-buttons>
+  <aris-tile-template-With-true-scope template="/html/aris-tile-title-with-buttons.html">  </aris-tile-template-With-true-scope
+</div>
+
+</body>
+</html>
+
+(function(){
+
+  var app=angular.module("pageApp",[]);
+  window.app={};
+  window.app.config={};
+    window.app.config.platform={};
+    window.app.config.platform.ARIS="/html/";
+
+  app.constant("window.app.config.platform.ARIS","/html/");
+  app.directive("arisTileTitleWithButtons",function() {
+    return {
+      scope: {
+         buttons: '=',
+         title:"@",
+         logo:"@"
+      },
+      restrict: "E",
+      templateUrl: window.app.config.platform.ARIS+"aris-tile-title-with-buttons.html",
+
+      link: function ($scope, $element, $attrs){
+
+        $scope.buttons={
+          "addKey" : {
+                      "text":"addValue",
+                      "targetPage": "hello"
+                    }
+
+        };
+        $scope.onButtonClick = function(index){
+            location.href =  $scope.buttons[index].targetPage;
+        }
+      }
+    };
+  });
+
+  angular.module("pageApp").directive("arisTileTemplateWithTrueScope", [function() {
+      return {
+        restrict: "E",
+        scope: true,
+        template: '<ng-include src="getTemplateUrl()"/>',
+
+        link: function (scope, element, attrs){
+          //   $(".list .mCustomScrollbar").mCustomScrollbar();
+
+             // Get html template url.
+              scope.getTemplateUrl = function() {
+                return attrs.template;
+              }
+        }
+      };
+    }]);
+})();
